@@ -6,12 +6,143 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GA</title>
+    <script>
+        let kolor = 'red'
+        function plansza() {
+            let z = document.getElementById('bp')
+            z.parentNode.removeChild(z)
+
+            let zx = document.createElement('p')
+            zx.id = 'kolejka'
+            zx.style.border = 'black solid 1px'
+            zx.style.height = '40px'
+            zx.style.width = '155px'
+            zx.style.display = 'inline-block'
+            zx.style.marginLeft = '5px'
+            zx.style.padding = '5px'
+            zx.innerText = 'Gracz: blue'
+
+            let bx = document.createElement('br')
+
+            document.getElementById("game").appendChild(zx);
+            document.getElementById("game").appendChild(bx);
+
+            for (let i = 0; i < 3; i++) {
+                for (let n = 0; n < 3; n++) {
+                    let x = document.createElement('div')
+                    x.id = i + '_' + n
+                    x.style.border = 'black solid 1px'
+                    x.style.height = '50px'
+                    x.style.width = '50px'
+                    x.style.display = 'inline-block'
+                    x.style.marginLeft = '5px'
+                    x.onclick = function () {
+                        spr(x.id)
+                    };
+
+                    document.getElementById("game").appendChild(x);
+                }
+                let b = document.createElement('br')
+                document.getElementById("game").appendChild(b);
+            }
+
+        }
+
+        function spr(idn) {
+            console.log(idn)
+
+            let pz = document.getElementById('kolejka')
+            if (kolor == 'blue') {
+                pz.innerText = 'Gracz: ' + kolor
+                kolor = 'red'
+
+            } else {
+                pz.innerText = 'Gracz: ' + kolor
+                kolor = 'blue'
+            }
+
+            // zmiana koloru i zabezpieczenie zeby nie dalo sie zmienic koloru przeciwnika
+            let el = document.getElementById(idn)
+            if (el.style.backgroundColor != 'blue' && el.style.backgroundColor != 'red') {
+                if (kolor == 'blue') {
+                    el.style.backgroundColor = kolor
+                    kolor == 'red'
+                } else {
+                    el.style.backgroundColor = kolor
+                    kolor == 'blue'
+                }
+            }
+            //win condition
+
+            let win = false
+            let i = idn[0]
+            let n = idn[2]
+
+            // console.log(kolor)
+
+            for (let x = 0; x < 3; x++) { //wygrana w pionie
+                win = true
+                // console.log(x + '_' + n)
+                let elTest = document.getElementById(x + '_' + n)
+                if (elTest.style.backgroundColor != kolor) {
+                    win = false
+                    break
+                }
+                // console.log(win)
+            }
+            if (win == true) {
+                alert('Gracz ' + kolor + ' wygral')
+            }
+
+            for (let x = 0; x < 3; x++) { //wygrana w poziomie
+                win = true
+                // console.log(x + '_' + n)
+                let elTest = document.getElementById(i + '_' + x)
+                if (elTest.style.backgroundColor != kolor) {
+                    win = false
+                    break
+                }
+            }
+            // console.log(win)
+            if (win == true) {
+                alert('Gracz ' + kolor + ' wygral')
+            }
+
+            if (document.getElementById('1_1').style.backgroundColor == kolor) {//wygrana na ukos
+                if (true) {
+                    let elTest0 = document.getElementById('0_0')
+                    let elTest1 = document.getElementById('2_2')
+                    console.log(elTest0.style.backgroundColor, ' ', elTest1.style.backgroundColor)
+                    if (elTest0.style.backgroundColor == kolor && elTest1.style.backgroundColor == kolor) {
+                        alert('Gracz ' + kolor + ' wygral')
+                        win = true
+                    }
+                }
+                if (true) {
+                    let elTest0 = document.getElementById('2_0')
+                    let elTest1 = document.getElementById('0_2')
+                    if (elTest0.style.backgroundColor == kolor && elTest1.style.backgroundColor == kolor) {
+                        alert('Gracz ' + kolor + ' wygral')
+                        win = true
+                    }
+                }
+            }
+            if (win == true) {
+                window.location.reload()
+            }
+        }
+
+
+    </script>
 </head>
 
 <body>
     <div>
         <h1>Podstrona 3</h1>
         <p>Poklikaj przyciski plz</p>
+    </div>
+    <div id="game">
+        <button id="bp" onclick="plansza()">klik</button>
     </div>
     <div>
         <button type="button">
