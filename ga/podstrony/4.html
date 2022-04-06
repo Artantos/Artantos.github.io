@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .widzialne {
+            margin: 5px;
+        }
+
+        .followMouse:hover {
+            background-color: green;
+        }
+
+        .celownik {
+            background-color: gray;
+        }
+    </style>
+    <script>
+        let kolor = 'red'
+        function plansza() {
+            let z = document.getElementById('hello')
+            z.parentNode.removeChild(z)
+
+            z = document.getElementById('bp')
+            z.parentNode.removeChild(z)
+
+            z = document.getElementById('button_menu')
+            z.parentNode.removeChild(z)
+
+            for (let i = 0; i < 18; i++) { //wysokosc planszy
+                for (let n = 0; n < 18; n++) { //dlugosc planszy
+                    let x = document.createElement('div')
+                    let ii = i
+                    if (i < 10) {
+                        ii = '0' + ii
+                    }
+                    if (n < 10) {
+                        x.id = ii + '_' + '0' + n
+                    } else {
+                        x.id = ii + '_' + n
+                    }
+
+                    x.style.border = 'black solid 1px'
+                    x.style.height = '48px'
+                    x.style.width = '48px'
+                    x.style.display = 'block'
+                    x.style.float = 'left'
+                    x.style.margin = '0'
+                    x.style.padding = '0'
+                    x.className = 'followMouse'
+                    x.onclick = function () {
+                        click(x.id)
+                    };
+                    x.onmouseover = function () {
+                        cel(x.id)
+
+                    };
+
+                    document.getElementById("game").appendChild(x);
+                }
+                let b = document.createElement('div')
+                b.style.clear = 'both'
+
+                document.getElementById("game").appendChild(b);
+            }
+        }
+        function cel(id_el) {
+            let el_i = String(id_el[0]) + String(id_el[1])
+            let el_n = String(id_el[3]) + String(id_el[4])
+            let el_t = 'test'
+            let num0 = ''
+            let num1 = ''
+            if (el_i - 1 < 10) {
+                num0 = '0'
+            } else {
+                num0 = ''
+            }
+            if (el_n - 1 < 10) {
+                num1 = '0'
+            } else {
+                num1 = ''
+            }
+            el_t = document.getElementById(num0 + (parseInt(el_i) - 1) + '_' + num1 + (parseInt(el_n) - 1))
+            el_t.className = 'celownik'
+            el_t = document.getElementById(num0 + (parseInt(el_i) + 1) + '_' + num1 + (parseInt(el_n) + 1))
+            el_t.className = 'celownik'
+            el_t = document.getElementById(num0 + (parseInt(el_i) - 1) + '_' + num1 + (parseInt(el_n) + 1))
+            el_t.className = 'celownik'
+            el_t = document.getElementById(num0 + (parseInt(el_i) + 1) + '_' + num1 + (parseInt(el_n) - 1))
+            el_t.className = 'celownik'
+
+
+        }
+        function click(id_el) {
+            console.log(id_el)
+            wave(id_el)
+
+
+        }
+        function wave(id_el) {
+            let el_i = String(id_el[0]) + String(id_el[1])
+            let el_n = String(id_el[3]) + String(id_el[4])
+            let el = document.getElementById(id_el)
+            el.style.backgroundColor = 'red'
+
+            for (let i = 0; i < 4; i++) {
+                let kolory = ['red', '']
+                for (let m = 0; m < kolory.length; m++) {
+                    setTimeout(function () {
+                        let el_t = 'test'
+                        //pion
+                        //rozprysk w gore
+                        if (el_i - i >= 0) {
+                            if (el_i - i < 10) {
+                                el_t = document.getElementById('0' + (el_i - i) + '_' + el_n)
+                            } else {
+                                el_t = document.getElementById(el_i - i + '_' + el_n)
+                            }
+                            el_t.style.backgroundColor = kolory[m]
+                        }
+                        //rozprysk w dol
+                        if (parseInt(el_i) + i < 18) {
+                            if (parseInt(el_i) + i < 10) {
+                                el_t = document.getElementById('0' + (parseInt(el_i) + i) + '_' + el_n)
+                            } else {
+                                el_t = document.getElementById((parseInt(el_i) + i) + '_' + el_n)
+                            }
+                            el_t.style.backgroundColor = kolory[m]
+                        }
+                        //poziom
+                        //rozprysk w lewo
+                        if (el_n - i >= 0) {
+                            if (el_n - i < 10) {
+                                el_t = document.getElementById(el_i + '_0' + (el_n - i))
+                            } else {
+                                el_t = document.getElementById(el_i + '_' + (el_n - i))
+                            }
+                            el_t.style.backgroundColor = kolory[m]
+                        }
+                        //rozprysk w prawo
+                        if (parseInt(el_n) + i < 18) {
+                            if (parseInt(el_n) + i < 10) {
+                                el_t = document.getElementById(el_i + '_0' + (parseInt(el_n) + i))
+                            } else {
+                                el_t = document.getElementById(el_i + '_' + (parseInt(el_n) + i))
+                            }
+                            el_t.style.backgroundColor = kolory[m]
+                        }
+                    }, 100 * i + 100 * m)
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="hello" class="widzialne">
+        <h1>Podstrona 4</h1>
+        <p>Poklikaj przyciski plz</p>
+    </div>
+    <div id="game" style="width: 1000px;">
+        <button id="bp" onclick="plansza()" class="widzialne">klik</button>
+    </div>
+    <div id="button_menu" class="widzialne">
+        <button type="button">
+            <a href="1.html">[ 1 ]</a>
+        </button>
+        <button type="button">
+            <a href="2.html">[ 2 ]</a>
+        </button>
+        <button type="button">
+            <a href="../index.html">[ 0 ]</a>
+        </button>
+    </div>
+</body>
+
+</html>
